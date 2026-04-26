@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scribble AI - Canvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Scribble AI: Multiplayer Drawing</h2>
+        <div class="room-control">
+            <input type="text" id="roomIdInput" placeholder="Enter Room ID (e.g. 123)">
+            <button id="joinBtn" onclick="joinRoom()">Join Room</button>
+            <span id="roomStatus"></span>
+        </div>
+        <canvas id="paintCanvas" width="800" height="500"></canvas>
+        <div class="controls">
+            <button onclick="clearCanvas()">Clear Board</button>
+            <p id="status">Connecting...</p>
+        </div>
+    </div>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
