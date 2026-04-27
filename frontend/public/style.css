@@ -22,13 +22,20 @@ body {
     gap: 16px;
 }
 
-h2 {
+h1 {
     color: #e0e0ff;
-    font-size: 1.6rem;
-    font-weight: 600;
+    font-size: 2rem;
+    font-weight: 700;
     letter-spacing: -0.5px;
 }
 
+.subtitle {
+    color: #888ab0;
+    font-size: 0.95rem;
+    margin-top: -8px;
+}
+
+/* ── Room control ─────────────────────────────────────────────────────────── */
 .room-control {
     display: flex;
     align-items: center;
@@ -62,7 +69,9 @@ h2 {
 }
 
 .room-control button,
-.controls button {
+.controls button,
+.game-controls button,
+.guess-area button {
     padding: 8px 18px;
     border-radius: 8px;
     border: none;
@@ -76,12 +85,16 @@ h2 {
 }
 
 .room-control button:hover,
-.controls button:hover {
+.controls button:hover,
+.game-controls button:hover,
+.guess-area button:hover {
     background: #574fd6;
 }
 
 .room-control button:active,
-.controls button:active {
+.controls button:active,
+.game-controls button:active,
+.guess-area button:active {
     transform: scale(0.97);
 }
 
@@ -98,6 +111,48 @@ h2 {
     min-width: 100px;
 }
 
+/* ── Word display ─────────────────────────────────────────────────────────── */
+.word-display {
+    color: white;
+    min-height: 44px;
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.word-display.drawer {
+    background: linear-gradient(135deg, #1e3a5f, #243b55);
+    color: #7dd3fc;
+    border: 1px solid #3b82f6;
+}
+
+.word-display.guesser {
+    background: linear-gradient(135deg, #2d1b4e, #3b1f5e);
+    color: #c4b5fd;
+    border: 1px solid #7c3aed;
+}
+
+/* ── Game controls ────────────────────────────────────────────────────────── */
+.game-controls {
+    display: flex;
+    gap: 10px;
+}
+
+#StartBtn {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    font-size: 1rem;
+    padding: 10px 28px;
+    border-radius: 10px;
+}
+
+#StartBtn:hover {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+/* ── Canvas ───────────────────────────────────────────────────────────────── */
 #paintCanvas {
     background: white;
     border-radius: 12px;
@@ -107,6 +162,149 @@ h2 {
     display: block;
 }
 
+/* ── Game Layout, Leaderboard & Chat ───────────────────────────────────────── */
+.game-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 1300px; /* Increased to fit leaderboard */
+}
+
+.leaderboard-box, .chat-box {
+    background: #16213e;
+    border-radius: 12px;
+    border: 2px solid #2a2a5a;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(108, 99, 255, 0.2);
+    overflow: hidden;
+    height: 500px; /* match canvas height */
+}
+
+.leaderboard-box {
+    width: 220px;
+}
+
+.leaderboard-box h3 {
+    color: #e0e0ff;
+    padding: 12px;
+    background: #0f0f23;
+    border-bottom: 1px solid #2a2a5a;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.leaderboard-list {
+    flex-grow: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    background: #1a1a2e;
+    border-radius: 8px;
+    border: 1px solid #3a3a6a;
+}
+
+.leaderboard-item .name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+.leaderboard-item .score {
+    font-weight: 700;
+    color: #22c55e;
+}
+
+.chat-box {
+    width: 280px;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.chat-message {
+    word-wrap: break-word;
+    color: #e0e0ff;
+}
+
+.chat-message .username {
+    font-weight: 600;
+    color: #6c63ff;
+    margin-right: 6px;
+}
+
+.chat-message.incorrect {
+    color: #ef4444; /* red for wrong guess */
+}
+
+.chat-message.system {
+    color: #22c55e; /* green for system/correct guess */
+    font-weight: 600;
+    text-align: center;
+    font-style: italic;
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 10px;
+    gap: 8px;
+    background: #0f0f23;
+    border-top: 1px solid #2a2a5a;
+}
+
+.chat-input-area input {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #3a3a6a;
+    background: #16213e;
+    color: white;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.chat-input-area input:focus {
+    border-color: #6c63ff;
+}
+
+.chat-input-area button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    background: #6c63ff;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.chat-input-area button:hover {
+    background: #574fd6;
+}
+
+/* ── Controls ─────────────────────────────────────────────────────────────── */
 .controls {
     display: flex;
     align-items: center;
@@ -117,4 +315,49 @@ h2 {
     font-size: 0.85rem;
     color: #888;
     font-weight: 500;
-}
+}
+
+/* ── Notification ─────────────────────────────────────────────────────────── */
+.notification {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    z-index: 999;
+    animation: fadeInDown 0.3s ease;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.notification.success {
+    background: #166534;
+    color: #bbf7d0;
+    border: 1px solid #22c55e;
+}
+
+.notification.error {
+    background: #7f1d1d;
+    color: #fecaca;
+    border: 1px solid #ef4444;
+}
+
+.notification.info {
+    background: #1e3a5f;
+    color: #bae6fd;
+    border: 1px solid #38bdf8;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
