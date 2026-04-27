@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scribble AI - Canvas</title>
+    <meta name="description" content="Multiplayer drawing and guessing game powered by Scribble AI.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -11,18 +13,59 @@
 
 <body>
     <div class="container">
-        <h2>Scribble AI: Multiplayer Drawing</h2>
+        <h1>🎨 Scribble AI</h1>
+        <p class="subtitle">Multiplayer Drawing &amp; Guessing Game</p>
+
+        <!-- Room Controls -->
         <div class="room-control">
+            <input type="text" id="usernameInput" placeholder="Enter Username (e.g. Alex)">
             <input type="text" id="roomIdInput" placeholder="Enter Room ID (e.g. 123)">
             <button id="joinBtn" onclick="joinRoom()">Join Room</button>
             <span id="roomStatus"></span>
         </div>
-        <canvas id="paintCanvas" width="800" height="500"></canvas>
-        <div class="controls">
-            <button onclick="clearCanvas()">Clear Board</button>
-            <p id="status">Connecting...</p>
+
+        <!-- Word / Role Display -->
+        <div id="WordDisplay" class="word-display"></div>
+
+        <!-- Game Controls -->
+        <div class="game-controls">
+            <button id="StartBtn" onclick="startGame()">🚀 Start Game</button>
+            <div id="TimerDisplay" style="display:none; font-size: 1.2rem; font-weight: bold; margin-left: 15px; color: white;">⏱️ <span id="TimerText">60</span>s</div>
         </div>
+
+        <!-- Game Layout (Leaderboard + Canvas + Chat) -->
+        <div class="game-layout">
+            <!-- Leaderboard -->
+            <div class="leaderboard-box">
+                <h3>🏆 Scores</h3>
+                <div id="leaderboardList" class="leaderboard-list">
+                    <!-- Players and scores injected here -->
+                </div>
+            </div>
+
+            <!-- Canvas -->
+            <canvas id="paintCanvas" width="800" height="500"></canvas>
+
+            <!-- Chat Box -->
+            <div id="chatBox" class="chat-box">
+                <div id="chatMessages" class="chat-messages"></div>
+                <div class="chat-input-area" id="chatInputArea" style="display:none;">
+                    <input type="text" id="chatInput" placeholder="Type guess or chat..." autocomplete="off">
+                    <button id="sendChatBtn" onclick="sendChat()">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status & Clear -->
+        <div class="controls">
+            <button id="clearBtn" onclick="clearCanvas()">🗑️ Clear Board</button>
+            <p id="status">Connecting…</p>
+        </div>
+
+        <!-- Notification Banner -->
+        <div id="notification" class="notification" style="display:none;"></div>
     </div>
+
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script src="app.js"></script>
 </body>
