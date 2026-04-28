@@ -100,9 +100,56 @@ io.on('connection', (socket) => {
         room.roundStartTime = Date.now();
         room.endTime = Date.now() + 60000; // 60 seconds
         if (room.timeoutId) clearTimeout(room.timeoutId);
+        
+        // Generate initial hint
+        room.hintArray = Array(word.length).fill('_');
+        for (let i = 0; i < word.length; i++) {
+            if (word[i] === ' ') room.hintArray[i] = ' ';
+        }
+        
+        // Reveal 1 random character initially
+        const unrevealedIndices = [];
+        for (let i = 0; i < word.length; i++) {
+            if (room.hintArray[i] === '_') unrevealedIndices.push(i);
+        }
+        if (unrevealedIndices.length > 0) {
+            const randomIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
+            room.hintArray[randomIndex] = word[randomIndex];
+        }
+
+        // Setup progressive hint timeouts
+        if (room.hintTimeouts) {
+            room.hintTimeouts.forEach(t => clearTimeout(t));
+        }
+        room.hintTimeouts = [];
+        
+        const hintsToReveal = Math.max(0, Math.floor(word.length / 2) - 1);
+        if (hintsToReveal > 0) {
+            const interval = 60000 / (hintsToReveal + 1);
+            for (let i = 1; i <= hintsToReveal; i++) {
+                const timeout = setTimeout(() => {
+                    if (!room.isPlaying) return;
+                    const unrevealed = [];
+                    for (let j = 0; j < word.length; j++) {
+                        if (room.hintArray[j] === '_') unrevealed.push(j);
+                    }
+                    if (unrevealed.length > 0) {
+                        const randomIdx = unrevealed[Math.floor(Math.random() * unrevealed.length)];
+                        room.hintArray[randomIdx] = word[randomIdx];
+                        io.to(roomId).emit('word-hint-update', room.hintArray.join(' '));
+                    }
+                }, interval * i);
+                room.hintTimeouts.push(timeout);
+            }
+        }
+
         room.timeoutId = setTimeout(() => {
             room.isPlaying = false;
             room.currentWord = null;
+            if (room.hintTimeouts) {
+                room.hintTimeouts.forEach(t => clearTimeout(t));
+                room.hintTimeouts = [];
+            }
             io.to(roomId).emit('round-over', { reason: 'timeout' });
         }, 60000);
 
@@ -111,8 +158,8 @@ io.on('connection', (socket) => {
         // Tell every player their role
         room.players.forEach((playerId) => {
             const role = playerId === drawerId ? 'drawer' : 'guesser';
-            // Only the drawer sees the word
-            const sentWord = role === 'drawer' ? word : null;
+            // Only the drawer sees the full word, guesser sees the hint
+            const sentWord = role === 'drawer' ? word : room.hintArray.join(' ');
             io.to(playerId).emit('game-started', { role, word: sentWord, remainingTime });
         });
     });
@@ -154,6 +201,10 @@ io.on('connection', (socket) => {
                     room.currentWord = null; // reset until next start
                     room.isPlaying = false;
                     if (room.timeoutId) clearTimeout(room.timeoutId);
+                    if (room.hintTimeouts) {
+                        room.hintTimeouts.forEach(t => clearTimeout(t));
+                        room.hintTimeouts = [];
+                    }
                     io.to(roomId).emit('round-over', { reason: 'all-guessed' });
                 }
                 return;

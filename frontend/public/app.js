@@ -39,8 +39,8 @@ function startGame() {
 // ── Game events ────────────────────────────────────────────────────────────
 socket.on('game-started', ({ role, word, remainingTime }) => {
     const wordDisplay = document.getElementById('WordDisplay');
-    const startBtn   = document.getElementById('StartBtn');
-    const guessArea  = document.getElementById('guessArea');
+    const startBtn = document.getElementById('StartBtn');
+    const guessArea = document.getElementById('guessArea');
     const timerDisplay = document.getElementById('TimerDisplay');
     const timerText = document.getElementById('TimerText');
 
@@ -54,7 +54,9 @@ socket.on('game-started', ({ role, word, remainingTime }) => {
         if (chatInputArea) chatInputArea.style.display = 'flex';
     } else {
         isDrawingAllowed = false;
-        if (wordDisplay) wordDisplay.textContent = '🔍 Guess the word!';
+        if (wordDisplay) {
+            wordDisplay.textContent = word ? `🔍 Guess the word: ${word}` : '🔍 Guess the word!';
+        }
         if (startBtn) startBtn.style.display = 'none';
         const chatInputArea = document.getElementById('chatInputArea');
         if (chatInputArea) chatInputArea.style.display = 'flex';
@@ -70,7 +72,7 @@ socket.on('game-started', ({ role, word, remainingTime }) => {
         timerDisplay.style.display = 'block';
         let secondsLeft = Math.ceil(remainingTime / 1000);
         timerText.textContent = secondsLeft;
-        
+
         if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
             secondsLeft--;
@@ -90,14 +92,21 @@ socket.on('guess-success', () => {
 
 socket.on('round-over', ({ reason }) => {
     const wordDisplay = document.getElementById('WordDisplay');
-    const startBtn   = document.getElementById('StartBtn');
+    const startBtn = document.getElementById('StartBtn');
     const timerDisplay = document.getElementById('TimerDisplay');
-    
+
     if (wordDisplay) wordDisplay.textContent = '⏰ Time is up!';
     if (startBtn) startBtn.style.display = 'inline-block';
     if (timerDisplay) timerDisplay.style.display = 'none';
     if (timerInterval) clearInterval(timerInterval);
     isDrawingAllowed = false;
+});
+
+socket.on('word-hint-update', (hint) => {
+    const wordDisplay = document.getElementById('WordDisplay');
+    if (wordDisplay && wordDisplay.textContent !== '🏆 You guessed it!' && !isDrawingAllowed) {
+        wordDisplay.textContent = `🔍 Guess the word: ${hint}`;
+    }
 });
 
 // ── Chat & Guesses ─────────────────────────────────────────────────────────
@@ -241,7 +250,7 @@ socket.on('score-update', (scores) => {
     sortedScores.forEach(s => {
         const item = document.createElement('div');
         item.className = 'leaderboard-item';
-        
+
         const nameSpan = document.createElement('span');
         nameSpan.className = 'name';
         nameSpan.textContent = s.username;
