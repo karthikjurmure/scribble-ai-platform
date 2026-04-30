@@ -35,7 +35,6 @@ h1 {
     margin-top: -8px;
 }
 
-/* ── Room control ─────────────────────────────────────────────────────────── */
 .room-control {
     display: flex;
     align-items: center;
@@ -169,10 +168,12 @@ h1 {
     align-items: flex-start;
     justify-content: center;
     width: 100%;
-    max-width: 1300px; /* Increased to fit leaderboard */
+    max-width: 1300px;
+    /* Increased to fit leaderboard */
 }
 
-.leaderboard-box, .chat-box {
+.leaderboard-box,
+.chat-box {
     background: #16213e;
     border-radius: 12px;
     border: 2px solid #2a2a5a;
@@ -180,7 +181,8 @@ h1 {
     flex-direction: column;
     box-shadow: 0 8px 32px rgba(108, 99, 255, 0.2);
     overflow: hidden;
-    height: 500px; /* match canvas height */
+    height: 500px;
+    /* match canvas height */
 }
 
 .leaderboard-box {
@@ -257,11 +259,13 @@ h1 {
 }
 
 .chat-message.incorrect {
-    color: #ef4444; /* red for wrong guess */
+    color: #ef4444;
+    /* red for wrong guess */
 }
 
 .chat-message.system {
-    color: #22c55e; /* green for system/correct guess */
+    color: #22c55e;
+    /* green for system/correct guess */
     font-weight: 600;
     text-align: center;
     font-style: italic;
