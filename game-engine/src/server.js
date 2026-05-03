@@ -5,7 +5,7 @@ const path = require('path');
 const { Server } = require('socket.io');
 const { createClient } = require('redis');
 
-// Import Handlers
+
 const registerRoomHandlers = require('./handlers/roomHandler');
 const registerChatHandlers = require('./handlers/chatHandler');
 const registerDrawingHandlers = require('./handlers/drawingHandler');
