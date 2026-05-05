@@ -4,3 +4,4 @@ python-multipart
 numpy
 pillow
 tensorflow
+tf_keras
