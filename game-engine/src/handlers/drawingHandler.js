@@ -33,7 +33,8 @@ module.exports = (io, socket, redisClient) => {
             const form = new FormData();
             form.append('file', buffer, { filename: 'drawing.png' });
 
-            const response = await axios.post('http://localhost:8000/predict', form, {
+            const aiUrl = process.env.AI_SERVICE_URL || 'http://localhost:8000';
+            const response = await axios.post(`${aiUrl}/predict`, form, {
                 headers: form.getHeaders(),
                 timeout: 5000 // 5s timeout
             });
