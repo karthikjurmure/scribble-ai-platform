@@ -37,7 +37,7 @@ document.getElementById('chatInput')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') sendChat();
 });
 
-socket.on('game-started', ({ role, word, remainingTime }) => {
+socket.on('game-started', ({ role, word, remainingTime, drawerName }) => {
     const wordDisplay = document.getElementById('WordDisplay');
     const startBtn = document.getElementById('StartBtn');
     const chatInputArea = document.getElementById('chatInputArea');
@@ -46,11 +46,30 @@ socket.on('game-started', ({ role, word, remainingTime }) => {
     isDrawingAllowed = (role === 'drawer');
     
     if (wordDisplay) {
-        wordDisplay.textContent = isDrawingAllowed ? `✏️ Your turn! Draw: "${word}"` : `🔍 Guess the word: ${word || ''}`;
+        if (isDrawingAllowed) {
+            wordDisplay.innerHTML = `<span class="drawer-notice">✏️ Your turn! Draw:</span> <strong class="word-reveal">"${word}"</strong>`;
+        } else {
+            wordDisplay.innerHTML = `<span class="drawer-notice">🔍 <strong>${drawerName}</strong> is drawing:</span> <strong class="word-reveal">${word || ''}</strong>`;
+        }
     }
     if (startBtn) startBtn.style.display = 'none';
     if (chatInputArea) chatInputArea.style.display = 'flex';
-    if (!isDrawingAllowed) document.getElementById('chatInput')?.focus();
+    
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendChatBtn');
+    
+    if (chatInput && sendBtn) {
+        if (isDrawingAllowed) {
+            chatInput.disabled = true;
+            chatInput.placeholder = "Drawers cannot chat!";
+            sendBtn.disabled = true;
+        } else {
+            chatInput.disabled = false;
+            chatInput.placeholder = "Type guess or chat...";
+            sendBtn.disabled = false;
+            chatInput.focus();
+        }
+    }
 
     updateTimer(remainingTime);
 });
@@ -60,13 +79,15 @@ socket.on('guess-success', () => {
     if (wordDisplay) wordDisplay.textContent = '🏆 You guessed it!';
 });
 
-socket.on('round-over', ({ reason }) => {
+socket.on('round-over', ({ word }) => {
     const wordDisplay = document.getElementById('WordDisplay');
     const startBtn = document.getElementById('StartBtn');
     const timerDisplay = document.getElementById('TimerDisplay');
 
-    if (wordDisplay) wordDisplay.textContent = '⏰ Time is up!';
-    if (startBtn) startBtn.style.display = 'inline-block';
+    if (wordDisplay) {
+        wordDisplay.innerHTML = `⏰ Round Over! The word was: <strong class="word-reveal">"${word}"</strong>`;
+    }
+    // We don't show the start button here because nextTurn handles game flow
     if (timerDisplay) timerDisplay.style.display = 'none';
     if (window.timerInterval) clearInterval(window.timerInterval);
     isDrawingAllowed = false;
