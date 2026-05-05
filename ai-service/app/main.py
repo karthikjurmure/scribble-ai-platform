@@ -1,6 +1,5 @@
 import os
 import sys
-# Add the root directory to sys.path so 'app' module can be found
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 os.environ["TF_USE_LEGACY_KERAS"] = "1"

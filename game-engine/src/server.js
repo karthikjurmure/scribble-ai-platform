@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
 
     // Register modular handlers
     registerRoomHandlers(io, socket, redisClient);
-    registerChatHandlers(io, socket);
+    registerChatHandlers(io, socket, redisClient);
     registerDrawingHandlers(io, socket, redisClient);
 });
 

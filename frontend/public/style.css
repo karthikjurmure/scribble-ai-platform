@@ -147,8 +147,26 @@ h1 {
     border-radius: 10px;
 }
 
-#StartBtn:hover {
+#StartBtn:hover:not(.disabled) {
     background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+#StartBtn.disabled {
+    background: #3a3a6a !important;
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.drawer-notice {
+    font-size: 0.9rem;
+    color: #888ab0;
+    margin-right: 8px;
+}
+
+.word-reveal {
+    color: #f59e0b;
+    text-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
 }
 
 /* ── Canvas ───────────────────────────────────────────────────────────────── */
