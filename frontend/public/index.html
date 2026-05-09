@@ -3,9 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Scribble AI - Canvas</title>
     <meta name="description" content="Multiplayer drawing and guessing game powered by Scribble AI.">
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -43,6 +47,22 @@
                 </div>
             </div>
 
+            <!-- Drawing Toolbar (Mobile Friendly) -->
+            <div id="drawingToolbar" class="drawing-toolbar" style="display:none;">
+                <div class="tool-group">
+                    <button class="tool-btn" onclick="setBrushSize(2)" title="Small">●</button>
+                    <button class="tool-btn active" onclick="setBrushSize(5)" title="Medium">●</button>
+                    <button class="tool-btn" onclick="setBrushSize(10)" title="Large">●</button>
+                </div>
+                <div class="tool-group">
+                    <button class="color-btn active" style="background: #000000;" onclick="setBrushColor('#000000')"></button>
+                    <button class="color-btn" style="background: #ef4444;" onclick="setBrushColor('#ef4444')"></button>
+                    <button class="color-btn" style="background: #3b82f6;" onclick="setBrushColor('#3b82f6')"></button>
+                    <button class="color-btn" style="background: #22c55e;" onclick="setBrushColor('#22c55e')"></button>
+                    <button class="color-btn" style="background: #f59e0b;" onclick="setBrushColor('#f59e0b')"></button>
+                </div>
+            </div>
+
             <!-- Canvas -->
             <canvas id="paintCanvas" width="800" height="500"></canvas>
 
@@ -50,7 +70,7 @@
             <div id="chatBox" class="chat-box">
                 <div id="chatMessages" class="chat-messages"></div>
                 <div class="chat-input-area" id="chatInputArea" style="display:none;">
-                    <input type="text" id="chatInput" placeholder="Type guess or chat..." autocomplete="off">
+                    <input type="text" id="chatInput" placeholder="Type your guess here..." autocomplete="off">
                     <button id="sendChatBtn" onclick="sendChat()">Send</button>
                 </div>
             </div>
@@ -58,7 +78,7 @@
 
         <!-- Status & Clear -->
         <div class="controls">
-            <button id="clearBtn" onclick="clearCanvas()">🗑️ Clear Board</button>
+            <button id="clearBtn" onclick="clearCanvas()" disabled>🗑️ Clear Board</button>
             <p id="status">Connecting…</p>
         </div>
 

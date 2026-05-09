@@ -45,11 +45,15 @@ socket.on('game-started', ({ role, word, remainingTime, drawerName }) => {
     clearLocalCanvas();
     isDrawingAllowed = (role === 'drawer');
     
+    const drawingToolbar = document.getElementById('drawingToolbar');
+    
     if (wordDisplay) {
         if (isDrawingAllowed) {
             wordDisplay.innerHTML = `<span class="drawer-notice">✏️ Your turn! Draw:</span> <strong class="word-reveal">"${word}"</strong>`;
+            if (drawingToolbar) drawingToolbar.style.display = 'flex';
         } else {
             wordDisplay.innerHTML = `<span class="drawer-notice">🔍 <strong>${drawerName}</strong> is drawing:</span> <strong class="word-reveal">${word || ''}</strong>`;
+            if (drawingToolbar) drawingToolbar.style.display = 'none';
         }
     }
     if (startBtn) startBtn.style.display = 'none';
@@ -58,6 +62,9 @@ socket.on('game-started', ({ role, word, remainingTime, drawerName }) => {
     const chatInput = document.getElementById('chatInput');
     const sendBtn = document.getElementById('sendChatBtn');
     
+    const clearBtn = document.getElementById('clearBtn');
+    if (clearBtn) clearBtn.disabled = !isDrawingAllowed;
+
     if (chatInput && sendBtn) {
         if (isDrawingAllowed) {
             chatInput.disabled = true;
@@ -65,7 +72,7 @@ socket.on('game-started', ({ role, word, remainingTime, drawerName }) => {
             sendBtn.disabled = true;
         } else {
             chatInput.disabled = false;
-            chatInput.placeholder = "Type guess or chat...";
+            chatInput.placeholder = "Type your guess here...";
             sendBtn.disabled = false;
             chatInput.focus();
         }
@@ -84,12 +91,18 @@ socket.on('round-over', ({ word }) => {
     const startBtn = document.getElementById('StartBtn');
     const timerDisplay = document.getElementById('TimerDisplay');
 
+    const drawingToolbar = document.getElementById('drawingToolbar');
+    if (drawingToolbar) drawingToolbar.style.display = 'none';
+
     if (wordDisplay) {
         wordDisplay.innerHTML = `⏰ Round Over! The word was: <strong class="word-reveal">"${word}"</strong>`;
     }
     // We don't show the start button here because nextTurn handles game flow
     if (timerDisplay) timerDisplay.style.display = 'none';
     if (window.timerInterval) clearInterval(window.timerInterval);
+    const clearBtn = document.getElementById('clearBtn');
+    if (clearBtn) clearBtn.disabled = true;
+
     isDrawingAllowed = false;
 });
 
