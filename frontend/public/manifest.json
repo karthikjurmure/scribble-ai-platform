@@ -1,0 +1,17 @@
+{
+  "name": "Scribble AI",
+  "short_name": "Scribble",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#6c63ff",
+  "description": "Multiplayer drawing and guessing game powered by AI.",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3532/3532854.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

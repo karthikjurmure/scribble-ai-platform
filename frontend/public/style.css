@@ -179,6 +179,64 @@ h1 {
     display: block;
 }
 
+/* ── Drawing Toolbar ──────────────────────────────────────────────────────── */
+.drawing-toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background: #16213e;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #2a2a5a;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.tool-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.tool-btn, .color-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f0f23;
+    color: white;
+    transition: all 0.2s;
+}
+
+.tool-btn:hover, .color-btn:hover {
+    border-color: #6c63ff;
+}
+
+.tool-btn.active, .color-btn.active {
+    border-color: #6c63ff;
+    background: #2a2a5a;
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.5);
+}
+
+.tool-btn[title="Small"] { font-size: 8px; }
+.tool-btn[title="Medium"] { font-size: 14px; }
+.tool-btn[title="Large"] { font-size: 20px; }
+
+@media (max-width: 600px) {
+    .drawing-toolbar {
+        gap: 10px;
+        padding: 6px;
+    }
+    .tool-btn, .color-btn {
+        width: 28px;
+        height: 28px;
+    }
+}
+
 /* ── Game Layout, Leaderboard & Chat ───────────────────────────────────────── */
 .game-layout {
     display: flex;
@@ -381,5 +439,131 @@ h1 {
     to {
         opacity: 1;
         transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* ── Mobile Responsive Layout ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    body { padding: 8px; }
+    h1 { font-size: 1.4rem; }
+    .container { gap: 10px; width: 100%; }
+    
+    .room-control { flex-direction: column; width: 100%; padding: 10px; }
+    .room-control input { width: 100%; }
+
+    .game-layout {
+        display: grid;
+        grid-template-areas: 
+            "canvas canvas"
+            "bottom bottom";
+        grid-template-columns: 1fr;
+        gap: 12px;
+        width: 100%;
+    }
+
+    #paintCanvas {
+        grid-area: canvas;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1; /* Square for mobile drawing as requested */
+        max-height: 45vh;
+        touch-action: none;
+    }
+
+    /* Sub-grid for the bottom half */
+    .game-layout-bottom-wrapper {
+        grid-area: bottom;
+        display: flex;
+        width: 100%;
+        gap: 8px;
+        height: 300px; /* Dedicated height for the interaction area */
+    }
+
+    /* We need to wrap leaderboard and chat in the HTML or simulate it with CSS Grid */
+    /* Since we can't easily change HTML structure without risk, we'll use Grid on the main layout */
+    .game-layout {
+        display: grid;
+        grid-template-areas: 
+            "canvas canvas"
+            "leaderboard chat";
+        grid-template-columns: 4fr 6fr; /* 40% / 60% split */
+        grid-template-rows: auto 300px;
+        gap: 10px;
+    }
+
+    .leaderboard-box {
+        grid-area: leaderboard;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+    }
+
+    .leaderboard-list {
+        flex-direction: column; /* Back to list for the side column */
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 8px;
+    }
+
+    .leaderboard-item {
+        min-width: 0;
+        width: 100%;
+        padding: 6px;
+        font-size: 0.8rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .chat-box {
+        grid-area: chat;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        background: white;
+        color: #1a1a2e;
+    }
+
+    .chat-messages {
+        padding: 8px;
+        font-size: 0.85rem;
+        color: #1a1a2e;
+    }
+
+    .chat-message .username {
+        color: #6c63ff;
+    }
+
+    .chat-input-area {
+        padding: 6px;
+        background: #f0f0f0;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-input-area input {
+        background: white;
+        color: #1a1a2e;
+        border: 1px solid #ccc;
+    }
+
+    .controls {
+        width: 100%;
+    }
+
+    .word-display {
+        width: 100%;
+        font-size: 0.95rem;
+        padding: 8px;
+    }
+}
+
+/* ── Extra Small Phones ───────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+    h1 { font-size: 1.2rem; }
+    .leaderboard-item {
+        min-width: 85px;
+        padding: 4px 8px;
+    }
+    .chat-box {
+        height: 250px;
     }
 }
