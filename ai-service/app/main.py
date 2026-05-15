@@ -17,10 +17,10 @@ app = FastAPI(title="Scribble AI Inference Service")
 async def predict(file: UploadFile = File(...)):
     content = await file.read()
     
-    # Preprocess
+    
     img_array = prepare_image(content, ai_model.img_size)
     
-    # Inference
+    
     guesses = ai_model.predict(img_array)
     
     return {"guesses": guesses}
