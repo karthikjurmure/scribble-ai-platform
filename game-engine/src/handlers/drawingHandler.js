@@ -97,8 +97,6 @@ function handleAiCorrectGuess(io, roomId, room, redisClient, callback) {
     if (aiBot) {
         aiBot.score += points;
     }
-    
-    // Drawer also gets 50 points if AI is the first to guess
     if (room.correctGuessers.length === 1) {
         const drawer = room.players.find(p => p.id === room.drawerId);
         if (drawer) drawer.score += 50;

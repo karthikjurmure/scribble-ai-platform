@@ -4,10 +4,6 @@ from PIL import Image
 import PIL.ImageOps
 
 def prepare_image(image_bytes: bytes, img_size: int) -> np.ndarray:
-    """
-    Convert an uploaded image into the format expected by our trained CNN.
-    QuickDraw training data: white strokes on black background, 28x28 grayscale, 0-1 float.
-    """
     img = Image.open(io.BytesIO(image_bytes))
 
     # Flatten transparent/semi-transparent backgrounds to white
