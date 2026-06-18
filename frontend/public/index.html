@@ -34,14 +34,16 @@
         <!-- Game Controls -->
         <div class="game-controls">
             <button id="StartBtn" onclick="startGame()">🚀 Start Game</button>
-            <div id="TimerDisplay" style="display:none; font-size: 1.2rem; font-weight: bold; margin-left: 15px; color: white;">⏱️ <span id="TimerText">60</span>s</div>
+            <div id="TimerDisplay"
+                style="display:none; font-size: 1.2rem; font-weight: bold; margin-left: 15px; color: white;">⏱️ <span
+                    id="TimerText">60</span>s</div>
         </div>
 
         <!-- Game Layout (Leaderboard + Canvas + Chat) -->
         <div class="game-layout">
             <!-- Leaderboard -->
             <div class="leaderboard-box">
-                <h3>🏆 Scores</h3>
+                <h3>🏆 Leaderboard</h3>
                 <div id="leaderboardList" class="leaderboard-list">
                     <!-- Players and scores injected here -->
                 </div>
@@ -55,7 +57,8 @@
                     <button class="tool-btn" onclick="setBrushSize(10)" title="Large">●</button>
                 </div>
                 <div class="tool-group">
-                    <button class="color-btn active" style="background: #000000;" onclick="setBrushColor('#000000')"></button>
+                    <button class="color-btn active" style="background: #000000;"
+                        onclick="setBrushColor('#000000')"></button>
                     <button class="color-btn" style="background: #ef4444;" onclick="setBrushColor('#ef4444')"></button>
                     <button class="color-btn" style="background: #3b82f6;" onclick="setBrushColor('#3b82f6')"></button>
                     <button class="color-btn" style="background: #22c55e;" onclick="setBrushColor('#22c55e')"></button>
