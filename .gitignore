@@ -8,8 +8,6 @@ venv/
 .env.*.local
 **/.env
 
-# Ignore markdown docs
-*.md
 
 # Logs
 *.log
